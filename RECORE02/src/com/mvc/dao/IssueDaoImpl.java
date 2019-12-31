@@ -226,9 +226,45 @@ public class IssueDaoImpl implements IssueDao {
 	@Override
 	public boolean I_delete(int iseq) {
 
-
 		
-		return false;
+		
+		Connection con = getConnection();
+		PreparedStatement pstmt = null;
+		int res = 0;
+		
+		
+		try {
+			Properties prop = new Properties();
+			String filePath = properties();
+			prop.load(new FileInputStream(filePath));
+			String sql = prop.getProperty("deleteIssue");
+			
+			System.out.println(sql);
+
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, iseq);
+
+
+			res = pstmt.executeUpdate();
+			
+			if(res>0) {
+				System.out.println("delete 성공");
+				commit(con);
+			}
+
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt, con);
+		}
+		
+		return res>0 ? true : false;
 	}
 	
 	

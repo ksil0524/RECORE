@@ -2,6 +2,7 @@ package com.mvc.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -210,6 +211,7 @@ public class Issue_Controller extends HttpServlet {
 			boolean res = dao.I_insert(vo);
 			
 			int i_seq = dao.I_getSeqCurrval();
+			
 			Vo_Issue ivo = dao.I_selectOne(i_seq);
 			
 			System.out.println(ivo);
@@ -261,16 +263,28 @@ public class Issue_Controller extends HttpServlet {
 				iss_content_file.delete();
 			}
 			
-			
-			
-			
-//			Enumeration e = mul.getFileNames();
-//				//파일 여러개의 이름을 가져옴
-//			while(e.hasMoreElements()) {
-//				System.out.println("fileName : " + mul.getFilesystemName((String)e.nextElement()));
-//			}
-			
 			response.sendRedirect("./RECOREMain/index.jsp");
+			
+		}else if(command.equals("deleteIssue")) {
+			
+			int pageno = Integer.parseInt(request.getParameter("pageno"));
+			int iseq = Integer.parseInt(request.getParameter("iss_no"));
+			
+			boolean res = dao.I_delete(iseq);
+			
+			if(res) {
+				
+				jsResponse("삭제에 성공하였습니다.", "issue.do?command=selectAllNews&pageno=1", response);
+				
+			}else {
+				
+				jsResponse("삭제에 실패하였습니다.", "issue.do?command=selectOneNews&iss_no="+iseq+"&pageno="+"", response);
+
+			}
+			
+			
+			
+			
 			
 		}
 		
@@ -293,5 +307,16 @@ public class Issue_Controller extends HttpServlet {
 		}
 		
 	}
+	
+	
+	private void jsResponse(String msg, String url, HttpServletResponse response) throws IOException {
+
+		String s = "<script type='text/javascript'> alert('"+msg+"'); location.href='"+url+"'; </script>";
+		
+		PrintWriter out = response.getWriter();
+		out.print(s);
+		
+	}
+	
 
 }

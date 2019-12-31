@@ -5,7 +5,8 @@
 <% response.setContentType("text/html; charset=UTF-8"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+<%@ page import="com.mvc.vo.Vo_Issue" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,6 +29,26 @@
     <link rel="stylesheet" href="<%=request.getContextPath() %>/RECOREMain/css/aos.css">
 
     <link rel="stylesheet" href="<%=request.getContextPath() %>/RECOREMain/css/style.css">
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+    	
+    	function deleteNews(){
+    		
+    		var iss_no = "${issue_vo.iss_no}";
+    		var pageno = "${page}";
+    		
+    		if(confirm("현재 뉴스를 삭제하시겠습니까?")){
+    			location.href="issue.do?command=deleteIssue&pageno="+pageno+"&iss_no="+iss_no;
+    		}else{
+    			
+    		}
+    		
+    	}
+    	
+    	
+    	
+    </script>
     
   </head>
   <body>
@@ -65,70 +86,14 @@
 			    	<img src="<%=request.getContextPath() %>/RECOREMain/RECOREIssue/images/${issue_vo.iss_no }/${issue_vo.iss_content }${i }.png" alt="Image" class="img-fluid">        	                  	
 	            </div>
            	</c:forEach>
-            
-<!-- 
-          <div class="col-lg-6 mb-5 mb-lg-0">
-            <div class="img-border">
-              <img src="images/img_5.jpg" alt="Image" class="img-fluid">
-            </div>
-          </div>
-          
--->
-          
-          
-<!--
-          <div class="col-lg-6">
-            <div class="row row-items">
-              <div class="col-6">
-                <a href="#" class="d-flex text-center feature active p-4 mb-4 bg-white">
-                  <span class="align-self-center w-100">
-                    <span class="d-block mb-3">
-                      <span class="flaticon-step-ladder display-3"></span>
-                    </span>
-                    <h3>Pool Decor</h3>
-                  </span>
-                </a>
-              </div>
-              <div class="col-6">
-                <a href="#" class="d-flex text-center feature active p-4 mb-4 bg-white">
-                  <span class="align-self-center w-100">
-                    <span class="d-block mb-3">
-                      <span class="flaticon-sit-down display-3"></span>
-                    </span>
-                    <h3>Seat Decor</h3>
-                  </span>
-                </a>
-              </div>
-            </div>
-            <div class="row row-items last">
-              <div class="col-6">
-                <a href="#" class="d-flex text-center feature active p-4 mb-4 bg-white">
-                  <span class="align-self-center w-100">
-                    <span class="d-block mb-3">
-                      <span class="flaticon-turned-off display-3"></span>
-                    </span>
-                    <h3>Intuitive Idea</h3>
-                  </span>
-                </a>
-              </div>
-              <div class="col-6">
-                <a href="#" class="d-flex text-center active feature active p-4 mb-4 bg-white">
-                  <span class="align-self-center w-100">
-                    <span class="d-block mb-3">
-                      <span class="flaticon-window display-3"></span>
-                    </span>
-                    <h3>Decorations</h3>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
--->
+  
           
         </div>
         <div style="text-align: right; margin-right: 100px;">${issue_vo.iss_writer }</div>
     	<div style="text-align: right; margin-right: 100px;">${issue_vo.iss_source }</div>
     	<div style="text-align: right; margin-right: 100px;"><a href="${issue_vo.iss_note }">${issue_vo.iss_note }</a></div>
+    	<div style="text-align: right; margin-right: 100px;"><button id="deletebtn" onclick="deleteNews()">글삭제</button></div>
+    	
       </div>
     </div>
 
